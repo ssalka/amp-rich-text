@@ -721,6 +721,11 @@ to-fast-properties@^2.0.0:
   resolved "https://registry.yarnpkg.com/to-fast-properties/-/to-fast-properties-2.0.0.tgz#dc5e698cbd079265bc73e0377681a4e4e83f616e"
   integrity sha512-/OaKK0xYrs3DmxRYqL/yDc+FxFUVYhDlXMhRmv3z915w2HF1tnN1omB354j8VUGO/hbRzyD6Y3sA7v7GS/ceog==
 
+typeface-ibm-plex-sans@^1.1.13:
+  version "1.1.13"
+  resolved "https://registry.yarnpkg.com/typeface-ibm-plex-sans/-/typeface-ibm-plex-sans-1.1.13.tgz#3141045440b445dc323bf3f87b6bcc57c0091ef2"
+  integrity sha512-WLe7IEjz4m3lDU5xXHMpOyVxnhGmCnuee5A9GJExHpYJcto+JzFg6uRNBSlsW6KDmb8mh8WJSGLSJJgjzj6iMg==
+
 typescript@^4.6.4:
   version "4.8.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.8.3.tgz#d59344522c4bc464a65a730ac695007fdb66dd88"
