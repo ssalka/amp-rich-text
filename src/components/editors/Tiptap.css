@@ -1,0 +1,14 @@
+.tiptap-toolbar {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  min-width: fit-content;
+  background-color: #CCC;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.tiptap-editor {
+  padding: 8px;
+  min-width: max-content;
+}

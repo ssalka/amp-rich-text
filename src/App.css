@@ -13,10 +13,6 @@
   gap: 8px;
 }
 
-.tabs button.selected {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
 .selected-editor {
   display: flex;
   align-items: center;
