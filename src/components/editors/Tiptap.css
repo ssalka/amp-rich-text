@@ -10,5 +10,7 @@
 
 .tiptap-editor {
   padding: 8px;
-  min-width: max-content;
+  flex-grow: 1;
+  max-width: 100%;
+  word-break: break-all;
 }

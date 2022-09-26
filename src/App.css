@@ -1,21 +1,45 @@
 #root {
   margin: 0 auto;
-  padding: 2rem;
 }
 
 .App {
   height: 100vh;
+  width: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .tabs {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   gap: 8px;
+}
+
+.editor-main {
+  margin-top: 32px;
+  display: flex;
+  align-self: stretch;
+  gap: 32px;
+  align-items: start;
 }
 
 .selected-editor {
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: center;
   min-height: 500px;
+  flex-grow: 1;
+}
+
+.editor-main pre {
+  background-color: #F0F0F0;
+  padding: 16px 24px;
+  border-radius: 8px;
+  width: 500px;
+  min-width: 500px;
+  overflow: auto;
+  font-size: 12px;
+  height: 500px;
+  box-sizing: border-box;
 }

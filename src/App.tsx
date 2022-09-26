@@ -2,6 +2,8 @@ import clsx from 'clsx';
 import { lazy, useCallback, useState, type MouseEvent } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { usePrevious } from 'react-use';
+import { useRecoilValue } from 'recoil';
+import { jsonState } from '@/content';
 
 import './App.css';
 
@@ -37,6 +39,7 @@ function App() {
     setSelectedEditor(nextEditor);
   }, []);
   const previousEditor = usePrevious(selectedEditor);
+  const editorJson = useRecoilValue(jsonState);
 
   return (
     <div className="App">
@@ -53,32 +56,35 @@ function App() {
           </button>
         ))}
       </div>
-      <ErrorBoundary
-        fallbackRender={({ resetErrorBoundary }) => {
-          if (previousEditor?.name === 'Tiptap') {
-            // Tiptap editor breaks on unmount - prevent it from crashing the page
-            resetErrorBoundary();
-            return null;
-          }
+      <div className="editor-main">
+        <ErrorBoundary
+          fallbackRender={({ resetErrorBoundary }) => {
+            if (previousEditor?.name === 'Tiptap') {
+              // Tiptap editor breaks on unmount - prevent it from crashing the page
+              resetErrorBoundary();
+              return null;
+            }
 
-          return (
-            <div>
-              oops 🙈
-              <br />
-              {previousEditor?.name} crashed – switch to another tab and back
-              again to get {selectedEditor.name} to render 😬
-            </div>
-          );
-        }}
-      >
-        <div className="selected-editor">
-          {'editor' in selectedEditor && selectedEditor.editor ? (
-            <selectedEditor.editor />
-          ) : (
-            `TODO: ${selectedEditor.name} editor`
-          )}
-        </div>
-      </ErrorBoundary>
+            return (
+              <div>
+                oops 🙈
+                <br />
+                {previousEditor?.name} crashed – switch to another tab and back
+                again to get {selectedEditor.name} to render 😬
+              </div>
+            );
+          }}
+        >
+          <div className="selected-editor">
+            {'editor' in selectedEditor && selectedEditor.editor ? (
+              <selectedEditor.editor />
+            ) : (
+              `TODO: ${selectedEditor.name} editor`
+            )}
+          </div>
+        </ErrorBoundary>
+        <pre>{JSON.stringify(editorJson, null, 2)}</pre>
+      </div>
     </div>
   );
 }

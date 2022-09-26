@@ -1,14 +1,17 @@
 import clsx from 'clsx';
+import { useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
 import { BubbleMenu, EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+import { defaultText, jsonState } from '@/content';
 
-import { defaultText } from '@/text';
 import './Tiptap.css';
-
 // BUG BubbleMenu breaks on unmount https://github.com/ueberdosis/tiptap/issues/3135
 
 export default () => {
+  const setJson = useSetRecoilState(jsonState);
   const editor = useEditor({
+    content: defaultText,
     extensions: [
       StarterKit.configure({
         paragraph: {
@@ -18,13 +21,21 @@ export default () => {
         },
       }),
     ],
-    content: defaultText,
     editorProps: {
       attributes: {
         class: 'tiptap-editor',
       },
     },
+    onUpdate({ editor }) {
+      setJson(editor.getJSON());
+    },
   });
+
+  useEffect(() => {
+    if (editor) {
+      setJson(editor.getJSON());
+    }
+  }, [editor]);
 
   return (
     <>
