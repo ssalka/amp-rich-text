@@ -1,34 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useCallback, useState, type MouseEvent } from 'react';
+import clsx from 'clsx';
+import './App.css';
+
+const textEditors = [
+  {
+    name: 'Tiptap',
+  },
+  {
+    name: 'Lexical',
+  },
+  {
+    name: 'ProseMirror',
+  },
+  {
+    name: 'CKEditor',
+  },
+  {
+    name: 'TinyMCE',
+  },
+  {
+    name: 'Slate',
+  },
+];
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [selectedEditor, setSelectedEditor] = useState(textEditors[0]);
+  const selectEditor = useCallback((e: MouseEvent<HTMLButtonElement>) => {
+    const nextEditor =
+      textEditors[+(e.target as HTMLButtonElement).dataset.index!];
+    setSelectedEditor(nextEditor);
+  }, []);
 
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <h1>Rich Text Editor Playground</h1>
+      <div className="tabs">
+        {textEditors.map((editor, i) => (
+          <button
+            key={editor.name}
+            data-index={i}
+            onClick={selectEditor}
+            className={clsx({ selected: editor.name === selectedEditor.name })}
+          >
+            {editor.name}
+          </button>
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <div className="selected-editor">TODO: {selectedEditor.name} editor</div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
