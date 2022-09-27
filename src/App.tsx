@@ -4,6 +4,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { usePrevious } from 'react-use';
 import { useRecoilValue } from 'recoil';
 
+// import Remirror from '@/components/editors/Remirror';
 import Slate from '@/components/editors/Slate';
 import Tiptap from '@/components/editors/Tiptap';
 import { jsonState } from '@/content';
@@ -20,10 +21,13 @@ const textEditors = [
     editor: Slate,
   },
   {
+    // too experimental? (early fb project)
     name: 'Lexical',
   },
   {
     name: 'ProseMirror',
+    // this just crashes the page 🤨
+    // editor: Remirror,
   },
   {
     name: 'CKEditor',
