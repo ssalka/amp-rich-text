@@ -34,6 +34,7 @@
 
 .editor-main pre {
   background-color: #F0F0F0;
+  margin: 0;
   padding: 16px 24px;
   border-radius: 8px;
   width: 500px;
