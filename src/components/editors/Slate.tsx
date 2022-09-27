@@ -3,6 +3,7 @@ import { useSetRecoilState } from 'recoil';
 import { createEditor } from 'slate';
 import { Editable, Slate, withReact } from 'slate-react';
 import { defaultText, jsonState } from '@/content';
+import { useMount } from 'react-use';
 
 const useSlate = () => {
   const [editor] = useState(() => withReact(createEditor()));
@@ -18,6 +19,10 @@ export default () => {
       children: [{ text: defaultText }],
     },
   ]);
+
+  useMount(() => {
+    setJson(value);
+  });
 
   return (
     <Slate editor={editor} value={value} onChange={setJson}>
