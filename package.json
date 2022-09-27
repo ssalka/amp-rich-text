@@ -18,6 +18,8 @@
     "react-error-boundary": "^3.1.4",
     "react-use": "^17.4.0",
     "recoil": "^0.7.5",
+    "slate": "^0.82.1",
+    "slate-react": "^0.83.0",
     "typeface-ibm-plex-sans": "^1.1.13"
   },
   "devDependencies": {

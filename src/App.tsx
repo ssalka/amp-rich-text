@@ -3,6 +3,9 @@ import { lazy, useCallback, useState, type MouseEvent } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { usePrevious } from 'react-use';
 import { useRecoilValue } from 'recoil';
+
+import Slate from '@/components/editors/Slate';
+import Tiptap from '@/components/editors/Tiptap';
 import { jsonState } from '@/content';
 
 import './App.css';
@@ -10,7 +13,11 @@ import './App.css';
 const textEditors = [
   {
     name: 'Tiptap',
-    editor: lazy(() => import('./components/editors/Tiptap')),
+    editor: Tiptap,
+  },
+  {
+    name: 'Slate',
+    editor: Slate,
   },
   {
     name: 'Lexical',
@@ -23,9 +30,6 @@ const textEditors = [
   },
   {
     name: 'TinyMCE',
-  },
-  {
-    name: 'Slate',
   },
 ] as const;
 
