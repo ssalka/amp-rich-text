@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-inline": "^35.1.0",
+    "@ckeditor/ckeditor5-react": "^5.0.2",
     "@remirror/pm": "^2.0.0",
     "@remirror/react": "^2.0.5",
     "@tiptap/extension-bubble-menu": "^2.0.0-beta.196",
@@ -26,6 +28,7 @@
     "typeface-ibm-plex-sans": "^1.1.13"
   },
   "devDependencies": {
+    "@types/ckeditor__ckeditor5-core": "^33.0.3",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^2.1.0",

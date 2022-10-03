@@ -7,6 +7,7 @@ import { useRecoilValue } from 'recoil';
 // import Remirror from '@/components/editors/Remirror';
 import Slate from '@/components/editors/Slate';
 import Tiptap from '@/components/editors/Tiptap';
+import CKEditor from '@/components/editors/CKEditor';
 import { jsonState } from '@/content';
 
 import './App.css';
@@ -31,6 +32,7 @@ const textEditors = [
   },
   {
     name: 'CKEditor',
+    editor: CKEditor,
   },
   {
     name: 'TinyMCE',
