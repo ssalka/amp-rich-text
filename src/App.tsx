@@ -1,13 +1,14 @@
 import clsx from 'clsx';
-import { lazy, useCallback, useState, type MouseEvent } from 'react';
+import { FC, useCallback, useState, type MouseEvent } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { usePrevious } from 'react-use';
 import { useRecoilValue } from 'recoil';
 
-// import Remirror from '@/components/editors/Remirror';
-import Slate from '@/components/editors/Slate';
-import Tiptap from '@/components/editors/Tiptap';
 import CKEditor from '@/components/editors/CKEditor';
+import Remirror from '@/components/editors/Remirror';
+import Slate from '@/components/editors/Slate';
+// import Tiptap from '@/components/editors/Tiptap';
+
 import { jsonState } from '@/content';
 
 import './App.css';
@@ -27,17 +28,14 @@ const textEditors = [
   },
   {
     name: 'ProseMirror',
-    // this just crashes the page 🤨
+    // this editor conflicts somehow with tiptap, only have 1 at a time uncommented
     // editor: Remirror,
   },
   {
     name: 'CKEditor',
     editor: CKEditor,
   },
-  {
-    name: 'TinyMCE',
-  },
-] as const;
+];
 
 type Editor = typeof textEditors[number];
 
@@ -70,7 +68,7 @@ function App() {
         <ErrorBoundary
           fallbackRender={({ resetErrorBoundary }) => {
             if (previousEditor?.name === 'Tiptap') {
-              // Tiptap editor breaks on unmount - prevent it from crashing the page
+              // Tiptap editor breaks on unmount due to bug with BubbleMenu plugin - prevent it from crashing the page
               resetErrorBoundary();
               return null;
             }
