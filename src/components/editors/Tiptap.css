@@ -1,5 +1,9 @@
-.selected-editor.Tiptap > div {
+.tiptap-container, .tiptap-container {
   width: 100%;
+}
+
+.selected-editor.Tiptap .ProseMirror {
+  padding: 0 8px;
 }
 
 .tiptap-toolbar {

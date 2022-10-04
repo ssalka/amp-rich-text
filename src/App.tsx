@@ -14,30 +14,31 @@ import { jsonState } from '@/content';
 
 import './App.css';
 
-const textEditors: Array<{ name: string; editor?: FC }> = [
-  {
-    name: 'CKEditor',
-    editor: CKEditor,
-  },
-  {
-    name: 'Tiptap',
-    editor: Tiptap,
-  },
-  {
-    name: 'Slate',
-    editor: Slate,
-  },
-  {
-    // too experimental? (early fb project)
-    name: 'Lexical',
-    editor: Lexical,
-  },
-  {
-    name: 'ProseMirror',
-    // this editor conflicts somehow with tiptap, only have 1 at a time uncommented
-    // editor: Remirror,
-  },
-];
+const textEditors: Array<{ name: string; editor?: FC<{ canEdit?: boolean }> }> =
+  [
+    {
+      name: 'CKEditor',
+      editor: CKEditor,
+    },
+    {
+      name: 'Tiptap',
+      editor: Tiptap,
+    },
+    {
+      name: 'Slate',
+      editor: Slate,
+    },
+    {
+      // too experimental? (early fb project)
+      name: 'Lexical',
+      editor: Lexical,
+    },
+    {
+      name: 'ProseMirror',
+      // this editor conflicts somehow with tiptap, only have 1 at a time uncommented
+      // editor: Remirror,
+    },
+  ];
 
 type Editor = typeof textEditors[number];
 
@@ -50,6 +51,7 @@ function App() {
   }, []);
   const previousEditor = usePrevious(selectedEditor);
   const editorJson = useRecoilValue(jsonState);
+  const [canEdit, setCanEdit] = useState(true);
 
   return (
     <div className="App">
@@ -88,7 +90,7 @@ function App() {
         >
           <div className={clsx('selected-editor', selectedEditor.name)}>
             {selectedEditor.editor ? (
-              <selectedEditor.editor />
+              <selectedEditor.editor canEdit={canEdit} />
             ) : (
               `TODO: ${selectedEditor.name} editor`
             )}
@@ -96,6 +98,13 @@ function App() {
         </ErrorBoundary>
         <pre>{JSON.stringify(editorJson, null, 2)}</pre>
       </div>
+      <br />
+      <button
+        onClick={() => setCanEdit(!canEdit)}
+        style={{ alignSelf: 'start' }}
+      >
+        {canEdit ? 'disable editing' : 'readonly mode -- click to toggle'}
+      </button>
     </div>
   );
 }

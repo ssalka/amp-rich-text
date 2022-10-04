@@ -37,11 +37,14 @@ button[disabled] {
   flex-grow: 1;
 }
 
-.editor-main pre {
+pre {
   background-color: #F0F0F0;
   margin: 0;
   padding: 16px 24px;
   border-radius: 8px;
+}
+
+.editor-main >  pre {
   width: 500px;
   min-width: 500px;
   overflow: auto;

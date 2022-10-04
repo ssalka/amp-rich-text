@@ -14,7 +14,6 @@ export default () => {
       editor={InlineEditor}
       data="<p>Hello from CKEditor 5!</p>"
       onReady={(editor: any) => {
-        console.log('Editor is ready to use', editor);
         editor.setData(defaultText);
         setJson(editor.getData());
       }}
