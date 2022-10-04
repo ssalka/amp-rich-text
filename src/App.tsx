@@ -13,7 +13,7 @@ import { jsonState } from '@/content';
 
 import './App.css';
 
-const textEditors = [
+const textEditors: Array<{ name: string; editor?: FC }> = [
   {
     name: 'Tiptap',
     editor: Tiptap,
@@ -53,14 +53,15 @@ function App() {
     <div className="App">
       <h1>Rich Text Editor Playground</h1>
       <div className="tabs">
-        {textEditors.map((editor, i) => (
+        {textEditors.map(({ name, editor }, i) => (
           <button
-            key={editor.name}
+            key={name}
             data-index={i}
             onClick={selectEditor}
-            className={clsx({ selected: editor.name === selectedEditor.name })}
+            className={clsx({ selected: name === selectedEditor.name })}
+            disabled={!editor}
           >
-            {editor.name}
+            {name}
           </button>
         ))}
       </div>

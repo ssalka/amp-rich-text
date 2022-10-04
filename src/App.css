@@ -16,6 +16,11 @@
   gap: 8px;
 }
 
+button[disabled] {
+  cursor: unset;
+  border: none;
+}
+
 .editor-main {
   margin-top: 32px;
   display: flex;
