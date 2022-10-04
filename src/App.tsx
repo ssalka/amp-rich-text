@@ -5,6 +5,7 @@ import { usePrevious } from 'react-use';
 import { useRecoilValue } from 'recoil';
 
 import CKEditor from '@/components/editors/CKEditor';
+import Lexical from '@/components/editors/Lexical';
 import Remirror from '@/components/editors/Remirror';
 import Slate from '@/components/editors/Slate';
 import Tiptap from '@/components/editors/Tiptap';
@@ -14,6 +15,10 @@ import { jsonState } from '@/content';
 import './App.css';
 
 const textEditors: Array<{ name: string; editor?: FC }> = [
+  {
+    name: 'CKEditor',
+    editor: CKEditor,
+  },
   {
     name: 'Tiptap',
     editor: Tiptap,
@@ -25,15 +30,12 @@ const textEditors: Array<{ name: string; editor?: FC }> = [
   {
     // too experimental? (early fb project)
     name: 'Lexical',
+    editor: Lexical,
   },
   {
     name: 'ProseMirror',
     // this editor conflicts somehow with tiptap, only have 1 at a time uncommented
     // editor: Remirror,
-  },
-  {
-    name: 'CKEditor',
-    editor: CKEditor,
   },
 ];
 
