@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { useEffect, useRef, useState, type PropsWithChildren } from 'react';
 import { createPortal } from 'react-dom';
-import { useMount, useToggle } from 'react-use';
+import { useMount } from 'react-use';
 import { useSetRecoilState } from 'recoil';
 
 import isHotkey from 'is-hotkey';
@@ -49,22 +49,21 @@ const HoveringToolbar = ({ editor, update }: any) => {
 
   useEffect(() => {
     const el = ref.current;
-    const { selection } = editor;
 
     if (!el) {
       return;
     }
 
-    if (!selection || update === null) {
-      // TODO hide toolbar on blur/deselect
+    const domSelection = window.getSelection();
+    if (!domSelection || domSelection.isCollapsed || update === null) {
+      el.style.opacity = '0';
       return;
     }
 
-    const domSelection = window.getSelection();
     const domRange = domSelection!.getRangeAt(0);
     const rect = domRange.getBoundingClientRect();
     el.style.opacity = '1';
-    el.style.top = `${rect.top + window.pageYOffset - el.offsetHeight}px`;
+    el.style.top = `${rect.top + window.pageYOffset - el.offsetHeight - 20}px`;
     el.style.left = `${
       rect.left + window.pageXOffset - el.offsetWidth / 2 + rect.width / 2
     }px`;
@@ -73,11 +72,9 @@ const HoveringToolbar = ({ editor, update }: any) => {
   return (
     <Portal>
       <div
+        className="slate-toolbar"
         ref={ref}
         style={{
-          display: 'flex',
-          gap: '8px',
-          position: 'absolute',
           opacity: 0,
           top: -10000,
           left: -10000,
@@ -102,7 +99,7 @@ const RichTextExample = () => {
   const editor = useSlate();
   const [value] = useState(initialValue);
   // hacky way to trigger toolbar showing on type, click  etc
-  const [update, toggle] = useToggle(false);
+  const [update, setUpdate] = useState<boolean | null>(false);
 
   useMount(() => {
     setJson(value);
@@ -117,10 +114,14 @@ const RichTextExample = () => {
         placeholder="Enter some rich text…"
         spellCheck
         autoFocus
-        onBlur={() => toggle(null)}
-        onClick={() => toggle()}
+        onBlur={() => {
+          setUpdate(null);
+        }}
+        onClick={() => {
+          setUpdate(!update);
+        }}
         onKeyDown={(event) => {
-          toggle();
+          setUpdate(!update);
           for (const hotkey in HOTKEYS) {
             if (isHotkey(hotkey, event as any)) {
               event.preventDefault();
