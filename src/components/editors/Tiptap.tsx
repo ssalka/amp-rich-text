@@ -19,11 +19,13 @@ const markMap = {
 function mdToJson(doc: any) {
   return {
     type: camelCase(doc.type.name),
+    ...(doc.attrs && { attrs: doc.attrs }),
     ...(doc.type.name === 'text'
       ? {
           text: doc.text,
           marks: doc.marks.map((m: any) => ({
             type: markMap[m.type.name] || m.type.name,
+            attrs: m.attrs,
           })),
           ...(doc.attrs && { attrs: doc.attrs }),
         }
