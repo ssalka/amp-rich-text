@@ -1,3 +1,7 @@
+.selected-editor.Tiptap > div {
+  width: 100%;
+}
+
 .tiptap-toolbar {
   display: flex;
   gap: 8px;

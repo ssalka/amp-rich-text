@@ -7,7 +7,7 @@ import { useRecoilValue } from 'recoil';
 import CKEditor from '@/components/editors/CKEditor';
 import Remirror from '@/components/editors/Remirror';
 import Slate from '@/components/editors/Slate';
-// import Tiptap from '@/components/editors/Tiptap';
+import Tiptap from '@/components/editors/Tiptap';
 
 import { jsonState } from '@/content';
 
@@ -84,8 +84,8 @@ function App() {
             );
           }}
         >
-          <div className="selected-editor">
-            {'editor' in selectedEditor && selectedEditor.editor ? (
+          <div className={clsx('selected-editor', selectedEditor.name)}>
+            {selectedEditor.editor ? (
               <selectedEditor.editor />
             ) : (
               `TODO: ${selectedEditor.name} editor`
