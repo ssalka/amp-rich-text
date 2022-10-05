@@ -35,6 +35,7 @@ let ranOnce = false;
 const WysiwygEditor: FC<PropsWithChildren<any>> = ({
   placeholder,
   stringHandler,
+  canEdit,
   children,
   ...rest
 }) => {
@@ -68,13 +69,14 @@ const WysiwygEditor: FC<PropsWithChildren<any>> = ({
   return (
     <ThemeProvider>
       <Remirror
+        editable={canEdit}
         initialContent={[]}
         manager={manager}
         onChange={() => toggle()}
         {...rest}
       >
         <EditorComponent />
-        <FloatingToolbar />
+        {canEdit && <FloatingToolbar />}
         <TableComponents />
         {children}
         <RemirrorInner update={update} />

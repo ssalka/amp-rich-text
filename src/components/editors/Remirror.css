@@ -1,6 +1,10 @@
 .remirror-theme {
   width: 100%;
 }
+.remirror-theme .ProseMirror {
+  box-shadow: none;
+}
+
 
 .remirror-editor-wrapper {
   padding-top: 0 !important;

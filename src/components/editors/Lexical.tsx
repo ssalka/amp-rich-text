@@ -62,6 +62,7 @@ function Editor({ canEdit = true }) {
       <SetInitialJsonPlugin setJson={setJson} />
       <OnChangePlugin onChange={handleChange} />
       <HistoryPlugin />
+      <ReadonlyPlugin canEdit={canEdit} />
     </LexicalComposer>
   );
 }
@@ -74,6 +75,16 @@ const SetInitialJsonPlugin = ({ setJson }) => {
   useEffect(() => {
     setJson(editor.getEditorState());
   }, [editor]);
+
+  return null;
+};
+
+const ReadonlyPlugin = ({ canEdit }) => {
+  const [editor] = useLexicalComposerContext();
+
+  useEffect(() => {
+    editor.setEditable(canEdit);
+  }, [canEdit, editor]);
 
   return null;
 };

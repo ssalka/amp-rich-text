@@ -44,7 +44,7 @@ export const Portal = ({ children }: PropsWithChildren) => {
   return createPortal(children, document.body);
 };
 
-const HoveringToolbar = ({ editor, update }: any) => {
+const HoveringToolbar = ({ editor, update, canEdit }: any) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -71,30 +71,32 @@ const HoveringToolbar = ({ editor, update }: any) => {
 
   return (
     <Portal>
-      <div
-        className="slate-toolbar"
-        ref={ref}
-        style={{
-          opacity: 0,
-          top: -10000,
-          left: -10000,
-        }}
-      >
-        <MarkButton editor={editor} format="bold" label="b" />
-        <MarkButton editor={editor} format="italic" label="i" />
-        <MarkButton editor={editor} format="underline" label="u" />
-        <MarkButton editor={editor} format="code" label="</>" />
-        <BlockButton editor={editor} format="heading-one" label="h1" />
-        <BlockButton editor={editor} format="heading-two" label="h2" />
-        <BlockButton editor={editor} format="block-quote" label=">" />
-        <BlockButton editor={editor} format="numbered-list" label="1." />
-        <BlockButton editor={editor} format="bulleted-list" label="&bull;" />
-      </div>
+      {canEdit && (
+        <div
+          className="slate-toolbar"
+          ref={ref}
+          style={{
+            opacity: 0,
+            top: -10000,
+            left: -10000,
+          }}
+        >
+          <MarkButton editor={editor} format="bold" label="b" />
+          <MarkButton editor={editor} format="italic" label="i" />
+          <MarkButton editor={editor} format="underline" label="u" />
+          <MarkButton editor={editor} format="code" label="</>" />
+          <BlockButton editor={editor} format="heading-one" label="h1" />
+          <BlockButton editor={editor} format="heading-two" label="h2" />
+          <BlockButton editor={editor} format="block-quote" label=">" />
+          <BlockButton editor={editor} format="numbered-list" label="1." />
+          <BlockButton editor={editor} format="bulleted-list" label="&bull;" />
+        </div>
+      )}
     </Portal>
   );
 };
 
-const RichTextExample = () => {
+const RichTextExample = ({ canEdit = true }) => {
   const setJson = useSetRecoilState(jsonState);
   const editor = useSlate();
   const [value] = useState(initialValue);
@@ -107,8 +109,9 @@ const RichTextExample = () => {
 
   return (
     <Slate editor={editor} value={initialValue}>
-      <HoveringToolbar editor={editor} update={update} />
+      <HoveringToolbar editor={editor} update={update} canEdit={canEdit} />
       <Editable
+        readOnly={!canEdit}
         renderElement={Element}
         renderLeaf={Leaf}
         placeholder="Enter some rich text…"
