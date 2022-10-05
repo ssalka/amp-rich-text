@@ -59,7 +59,7 @@ function Editor({ canEdit = true }) {
         placeholder={<></>}
       />
       <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
-
+      <SetInitialJsonPlugin setJson={setJson} />
       <OnChangePlugin onChange={handleChange} />
       <HistoryPlugin />
     </LexicalComposer>
@@ -67,3 +67,13 @@ function Editor({ canEdit = true }) {
 }
 
 export default Editor;
+
+const SetInitialJsonPlugin = ({ setJson }) => {
+  const [editor] = useLexicalComposerContext();
+
+  useEffect(() => {
+    setJson(editor.getEditorState());
+  }, [editor]);
+
+  return null;
+};
