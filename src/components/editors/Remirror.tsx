@@ -12,6 +12,7 @@ import {
   useRemirror,
 } from '@remirror/react';
 import { TableExtension } from '@remirror/extension-react-tables';
+import { MarkdownExtension } from '@remirror/extension-markdown';
 
 import 'remirror/styles/all.css';
 import './Remirror.css';
@@ -28,6 +29,9 @@ const remirrorJsonFromStorage = {
   ],
 };
 
+// the insertMarkdown hook is getting run twice?? why?
+let ranOnce = false;
+
 const WysiwygEditor: FC<PropsWithChildren<any>> = ({
   placeholder,
   stringHandler,
@@ -38,6 +42,7 @@ const WysiwygEditor: FC<PropsWithChildren<any>> = ({
     () => [
       new PlaceholderExtension({ placeholder }),
       new TableExtension(),
+      new MarkdownExtension(),
       ...wysiwygPreset(),
     ],
     [placeholder]
@@ -46,10 +51,24 @@ const WysiwygEditor: FC<PropsWithChildren<any>> = ({
   const [update, toggle] = useToggle(false);
 
   const { manager } = useRemirror({ extensions, stringHandler });
+
+  useEffect(() => {
+    if (!ranOnce) {
+      manager.store.commands.insertMarkdown(defaultText);
+      ranOnce = true;
+    }
+
+    return () => {
+      setTimeout(() => {
+        ranOnce = false;
+      });
+    };
+  }, []);
+
   return (
     <ThemeProvider>
       <Remirror
-        initialContent={remirrorJsonFromStorage}
+        initialContent={[]}
         manager={manager}
         onChange={() => toggle()}
         {...rest}

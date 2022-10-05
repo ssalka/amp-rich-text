@@ -13,6 +13,7 @@
     "@ckeditor/ckeditor5-react": "^5.0.2",
     "@lexical/react": "^0.5.0",
     "@lexical/rich-text": "^0.5.0",
+    "@remirror/extension-markdown": "^2.0.5",
     "@remirror/pm": "^2.0.0",
     "@remirror/react": "^2.0.5",
     "@tiptap/extension-bubble-menu": "^2.0.0-beta.196",
