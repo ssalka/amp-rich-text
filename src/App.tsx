@@ -18,26 +18,32 @@ import './App.css';
 const textEditors: Array<{ name: string; editor?: FC<{ canEdit?: boolean }> }> =
   [
     {
-      name: 'CKEditor',
-      editor: CKEditor,
-    },
-    {
-      name: 'Tiptap',
-      editor: Tiptap,
-    },
-    {
-      name: 'Slate',
-      editor: Slate,
-    },
-    {
-      // too experimental? (early fb project)
+      // early fb project - too experimental?
       name: 'Lexical',
       editor: Lexical,
     },
     {
+      // also an early project, but wraps prosemirror
+      name: 'Tiptap',
+      // comment out if using Remirror
+      editor: Tiptap,
+    },
+    {
+      // this is a very DIY library, in this example there's a toolbar
+      // that *should* appear when you select text. it's sorta buggy
+      name: 'Slate',
+      editor: Slate,
+    },
+    {
+      // using a wrapper library called remirror - for a pure prosemirror implementation,
+
       name: 'ProseMirror',
-      // this editor conflicts somehow with tiptap, only have 1 at a time uncommented
+      // this editor conflicts somehow with tiptap - only have 1 at a time uncommented
       // editor: Remirror,
+    },
+    {
+      name: 'CKEditor',
+      editor: CKEditor,
     },
     // doesn't work, I guess
     // {
