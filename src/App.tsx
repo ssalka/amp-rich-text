@@ -9,6 +9,7 @@ import Lexical from '@/components/editors/Lexical';
 import Remirror from '@/components/editors/Remirror';
 import Slate from '@/components/editors/Slate';
 import Tiptap from '@/components/editors/Tiptap';
+import EditorJs from './components/editors/EditorJs';
 
 import { jsonState } from '@/content';
 
@@ -38,6 +39,11 @@ const textEditors: Array<{ name: string; editor?: FC<{ canEdit?: boolean }> }> =
       // this editor conflicts somehow with tiptap, only have 1 at a time uncommented
       // editor: Remirror,
     },
+    // doesn't work, I guess
+    // {
+    //   name: 'Editor.js',
+    //   editor: EditorJs,
+    // },
   ];
 
 type Editor = typeof textEditors[number];
