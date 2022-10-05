@@ -1,6 +1,8 @@
 // missing TS types 😢
+// @ts-ignore
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 // missing TS types 😢
+// @ts-ignore
 import InlineEditor from '@ckeditor/ckeditor5-build-inline';
 import { useSetRecoilState } from 'recoil';
 import { useEffect, useRef } from 'react';

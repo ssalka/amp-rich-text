@@ -138,7 +138,7 @@ const RichTextExample = ({ canEdit = true }) => {
   );
 };
 
-const toggleBlock = (editor, format) => {
+const toggleBlock = (editor: Editor, format: string) => {
   const isActive = isBlockActive(
     editor,
     format,
@@ -150,11 +150,11 @@ const toggleBlock = (editor, format) => {
     match: (n) =>
       !Editor.isEditor(n) &&
       SlateElement.isElement(n) &&
-      LIST_TYPES.includes(n.type) &&
+      LIST_TYPES.includes((n as any).type) &&
       !TEXT_ALIGN_TYPES.includes(format),
     split: true,
   });
-  let newProperties: Partial<SlateElement>;
+  let newProperties: Partial<SlateElement & { [key: string]: unknown }>;
   if (TEXT_ALIGN_TYPES.includes(format)) {
     newProperties = {
       align: isActive ? undefined : format,
@@ -172,7 +172,7 @@ const toggleBlock = (editor, format) => {
   }
 };
 
-const toggleMark = (editor, format) => {
+const toggleMark = (editor: Editor, format: string) => {
   const isActive = isMarkActive(editor, format);
 
   if (isActive) {
@@ -182,7 +182,7 @@ const toggleMark = (editor, format) => {
   }
 };
 
-const isBlockActive = (editor, format, blockType = 'type') => {
+const isBlockActive = (editor: Editor, format: string, blockType = 'type') => {
   const { selection } = editor;
   if (!selection) return false;
 
@@ -192,19 +192,19 @@ const isBlockActive = (editor, format, blockType = 'type') => {
       match: (n) =>
         !Editor.isEditor(n) &&
         SlateElement.isElement(n) &&
-        n[blockType] === format,
+        (n[blockType as keyof typeof n] as unknown as string) === format,
     })
   );
 
   return !!match;
 };
 
-const isMarkActive = (editor, format) => {
+const isMarkActive = (editor: Editor, format: string) => {
   const marks = Editor.marks(editor);
-  return marks ? marks[format] === true : false;
+  return marks ? marks[format as keyof typeof marks] === true : false;
 };
 
-const Element = ({ attributes, children, element }) => {
+const Element = ({ attributes, children, element }: any) => {
   const style = { textAlign: element.align };
   switch (element.type) {
     case 'block-quote':
@@ -252,7 +252,7 @@ const Element = ({ attributes, children, element }) => {
   }
 };
 
-const Leaf = ({ attributes, children, leaf }) => {
+const Leaf = ({ attributes, children, leaf }: any) => {
   if (leaf.bold) {
     children = <strong>{children}</strong>;
   }
@@ -272,7 +272,7 @@ const Leaf = ({ attributes, children, leaf }) => {
   return <span {...attributes}>{children}</span>;
 };
 
-const BlockButton = ({ format, label, editor }) => {
+const BlockButton = ({ format, label, editor }: any) => {
   return (
     <button
       className={clsx({
@@ -292,7 +292,7 @@ const BlockButton = ({ format, label, editor }) => {
   );
 };
 
-const MarkButton = ({ format, label, editor }) => {
+const MarkButton = ({ format, label, editor }: any) => {
   return (
     <button
       className={clsx({ active: isMarkActive(editor, format) })}

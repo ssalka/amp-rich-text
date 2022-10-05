@@ -19,13 +19,6 @@ const theme = {
   // Theme styling goes here
 };
 
-// Catch any errors that occur during Lexical updates and log them
-// or throw them as needed. If you don't throw them, Lexical will
-// try to recover gracefully without losing user data.
-function onError(error) {
-  console.error(error);
-}
-
 function Editor({ canEdit = true }) {
   const setJson = useSetRecoilState(jsonState);
 
@@ -47,8 +40,8 @@ function Editor({ canEdit = true }) {
         namespace: 'MyEditor',
         editable: canEdit,
         theme,
-        onError,
-        nodes: TRANSFORMERS.flatMap((t) => t.dependencies).filter(Boolean),
+        onError: (error) => console.error(error),
+        nodes: TRANSFORMERS.flatMap((t: any) => t.dependencies).filter(Boolean),
         editorState: () =>
           // ready-to-go load from markdown 👀
           $convertFromMarkdownString(defaultText, TRANSFORMERS),
@@ -69,7 +62,7 @@ function Editor({ canEdit = true }) {
 
 export default Editor;
 
-const SetInitialJsonPlugin = ({ setJson }) => {
+const SetInitialJsonPlugin = ({ setJson }: any) => {
   const [editor] = useLexicalComposerContext();
 
   useEffect(() => {
@@ -79,7 +72,7 @@ const SetInitialJsonPlugin = ({ setJson }) => {
   return null;
 };
 
-const ReadonlyPlugin = ({ canEdit }) => {
+const ReadonlyPlugin = ({ canEdit = true }) => {
   const [editor] = useLexicalComposerContext();
 
   useEffect(() => {

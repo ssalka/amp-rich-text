@@ -1,11 +1,12 @@
 import clsx from 'clsx';
 import camelCase from 'lodash/camelCase';
 import times from 'lodash/times';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { BubbleMenu, EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
+import { Level } from '@tiptap/extension-heading';
 import { defaultMarkdownParser } from 'prosemirror-markdown';
 
 import { defaultText, jsonState } from '@/content';
@@ -25,7 +26,7 @@ function mdToJson(doc: any) {
       ? {
           text: doc.text,
           marks: doc.marks.map((m: any) => ({
-            type: markMap[m.type.name] || m.type.name,
+            type: markMap[m.type.name as keyof typeof markMap] || m.type.name,
             attrs: m.attrs,
           })),
           ...(doc.attrs && { attrs: doc.attrs }),
@@ -101,7 +102,7 @@ export default ({ canEdit = true }) => {
                       .setHeading({
                         level: parseInt(
                           e.target.options[e.target.selectedIndex].value
-                        ),
+                        ) as Level,
                       })
                       .run()
               }
