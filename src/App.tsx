@@ -111,12 +111,16 @@ function App() {
         <pre>{JSON.stringify(editorJson, null, 2)}</pre>
       </div>
       <br />
-      <button
-        onClick={() => setCanEdit(!canEdit)}
-        style={{ alignSelf: 'start' }}
-      >
-        {canEdit ? 'disable editing' : 'readonly mode -- click to toggle'}
-      </button>
+      <div className="footer-buttons">
+        <button onClick={() => setCanEdit(!canEdit)}>
+          {canEdit ? 'disable editing' : 'readonly mode -- click to toggle'}
+        </button>
+        <button
+          onClick={() => console.log(JSON.parse(JSON.stringify(editorJson)))}
+        >
+          Log JSON
+        </button>
+      </div>
     </div>
   );
 }

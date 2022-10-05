@@ -44,11 +44,20 @@ pre {
   border-radius: 8px;
 }
 
-.editor-main >  pre {
+.editor-main > pre {
   width: 500px;
   min-width: 500px;
   overflow: auto;
   font-size: 12px;
   height: 500px;
   box-sizing: border-box;
+  box-shadow:
+    -10px -10px 15px rgba(240,240,240,0.9),
+    10px 10px 15px rgba(70,70,70,0.12);
+}
+
+.footer-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
