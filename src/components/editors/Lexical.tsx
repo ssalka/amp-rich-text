@@ -8,15 +8,21 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 
 import { jsonState, defaultText } from '@/content';
 
 import './Lexical.css';
+import ListMaxIndentLevelPlugin from './LexicalMaxPlugin';
 
 const theme = {
-  // Theme styling goes here
+  list: {
+    nested: {
+      listitem: 'lexical-nested-list-item',
+    },
+  },
 };
 
 function Editor({ canEdit = true }) {
@@ -56,6 +62,8 @@ function Editor({ canEdit = true }) {
       <OnChangePlugin onChange={handleChange} />
       <HistoryPlugin />
       <ReadonlyPlugin canEdit={canEdit} />
+      <ListPlugin />
+      <ListMaxIndentLevelPlugin />
     </LexicalComposer>
   );
 }

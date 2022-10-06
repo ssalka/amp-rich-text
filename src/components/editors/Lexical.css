@@ -6,3 +6,7 @@
 .selected-editor.Lexical p {
   margin: 0;
 }
+
+.lexical-nested-list-item {
+  list-style-type: none;
+}
