@@ -56,7 +56,7 @@ export default ({ canEdit = true }) => {
             },
           },
         }),
-        Link.configure({ autolink: true }).extend({
+        Link.extend({
           addKeyboardShortcuts() {
             return {
               'Mod-k': () => {
@@ -69,6 +69,9 @@ export default ({ canEdit = true }) => {
               'Shift-Mod-k': () => this.editor.commands.unsetLink(),
             };
           },
+        }).configure({
+          autolink: true,
+          openOnClick: false,
         }),
       ],
       editorProps: {
@@ -80,7 +83,6 @@ export default ({ canEdit = true }) => {
         setJson(editor.getJSON());
       },
       onFocus({ editor }) {
-        console.log('focus', canEdit);
         editor.setEditable(canEdit);
       },
       onBlur({ editor }) {
