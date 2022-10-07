@@ -18,15 +18,15 @@ import './App.css';
 const textEditors: Array<{ name: string; editor?: FC<{ canEdit?: boolean }> }> =
   [
     {
-      // early fb project - too experimental?
-      name: 'Lexical',
-      editor: Lexical,
-    },
-    {
       // also an early project, but wraps prosemirror
       name: 'Tiptap',
       // comment out if using Remirror
       editor: Tiptap,
+    },
+    {
+      // early fb project - too experimental?
+      name: 'Lexical',
+      editor: Lexical,
     },
     {
       // this is a very DIY library, in this example there's a toolbar
