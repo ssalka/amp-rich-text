@@ -9,6 +9,7 @@ import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import { Level } from '@tiptap/extension-heading';
 import { defaultMarkdownParser } from 'prosemirror-markdown';
+import { ReplaceStep } from 'prosemirror-transform';
 import type { Node } from 'prosemirror-model';
 
 import { defaultText, jsonState } from '@/content';
@@ -79,7 +80,25 @@ export default ({ canEdit = true }) => {
           class: 'tiptap-editor',
         },
       },
-      onUpdate({ editor }) {
+      onUpdate({ editor, transaction }) {
+        const { steps, storedMarks } = transaction;
+        const isCodeMarkContinuedOnNewLine =
+          steps.length === 1 &&
+          steps[0] instanceof ReplaceStep &&
+          storedMarks?.[0]?.type.name === 'code';
+
+        /**
+         * BUG on editor load, if the document ends with a code mark,
+         * entering a new line preserves the code mark, preventing other
+         * markdown shortcuts from taking effect (notably `* `).
+         * HACK To prevent this, we unset the code mark on the new line.
+         * NOTE this bug doesn't happen with regular user input 👍
+         */
+        if (isCodeMarkContinuedOnNewLine) {
+          console.log('unsetting code on new line');
+          editor.commands.unsetCode();
+        }
+
         setJson(editor.getJSON());
       },
       onFocus({ editor }) {
@@ -95,6 +114,7 @@ export default ({ canEdit = true }) => {
   useEffect(() => {
     if (editor) {
       setJson(editor.getJSON());
+      editor.commands.unsetCode();
     }
   }, [editor]);
 
