@@ -59,9 +59,14 @@ export default ({ canEdit = true }) => {
         Link.configure({ autolink: true }).extend({
           addKeyboardShortcuts() {
             return {
-              // TODO open popover here where user can set link URL + text
-              'Mod-k': () =>
-                this.editor.commands.setLink({ href: 'https://amplitude.com' }),
+              'Mod-k': () => {
+                // TODO replace with popover
+                const href = prompt('Enter URL or clear to remove link:');
+                return href
+                  ? this.editor.commands.setLink({ href })
+                  : this.editor.commands.unsetLink();
+              },
+              'Shift-Mod-k': () => this.editor.commands.unsetLink(),
             };
           },
         }),
