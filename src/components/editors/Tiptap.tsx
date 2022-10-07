@@ -9,7 +9,7 @@ import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import { Level } from '@tiptap/extension-heading';
 import { defaultMarkdownParser } from 'prosemirror-markdown';
-import { ReplaceStep } from 'prosemirror-transform';
+import { RemoveMarkStep, ReplaceStep } from 'prosemirror-transform';
 import type { Node } from 'prosemirror-model';
 
 import { defaultText, jsonState } from '@/content';
@@ -97,6 +97,33 @@ export default ({ canEdit = true }) => {
         if (isCodeMarkContinuedOnNewLine) {
           console.log('unsetting code on new line');
           editor.commands.unsetCode();
+        }
+
+        const isUndoOfSingleCharAutoFormatting =
+          steps.length === 2 &&
+          steps[0] instanceof RemoveMarkStep &&
+          steps[1] instanceof ReplaceStep;
+
+        if (isUndoOfSingleCharAutoFormatting) {
+          console.log('reapplying trailing character');
+          // HACK referencing `steps[1].slice.content[0].text` directly somehow has a side effect
+          const res = JSON.parse(JSON.stringify(steps[1]));
+          editor.commands.insertContent(res.slice.content[0].text);
+        }
+
+        // WIP, this undo is more complicated as tiptap seems a bit buggy here.
+        // probably, we will disable double underscore formatting and prefer
+        // using a single asterisk for bold (instead of italic)
+        const isUndoOfMultiCharAutoFormatting =
+          steps.length === 4 &&
+          steps[0] instanceof RemoveMarkStep &&
+          steps[1] instanceof ReplaceStep &&
+          steps[2] instanceof ReplaceStep &&
+          steps[3] instanceof ReplaceStep;
+
+        if (isUndoOfMultiCharAutoFormatting) {
+          console.log('TODO reapplying trailing characters');
+          console.log(steps);
         }
 
         setJson(editor.getJSON());
