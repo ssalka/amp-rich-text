@@ -1,8 +1,13 @@
+import compact from 'lodash/compact';
 import { useCallback, useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 
 import { EditorState } from 'lexical';
-import { $convertFromMarkdownString, TRANSFORMERS } from '@lexical/markdown';
+import {
+  $convertFromMarkdownString,
+  TRANSFORMERS,
+  type ElementTransformer,
+} from '@lexical/markdown';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
@@ -13,9 +18,9 @@ import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 
 import { jsonState, defaultText } from '@/content';
+import ListMaxIndentLevelPlugin from './LexicalMaxPlugin';
 
 import './Lexical.css';
-import ListMaxIndentLevelPlugin from './LexicalMaxPlugin';
 
 const theme = {
   list: {
@@ -40,14 +45,18 @@ function Editor({ canEdit = true }) {
     [setJson]
   );
 
+  const nodes = compact(
+    TRANSFORMERS.flatMap((t) => (t as ElementTransformer).dependencies)
+  );
+
   return (
     <LexicalComposer
       initialConfig={{
         namespace: 'MyEditor',
         editable: canEdit,
         theme,
+        nodes,
         onError: (error) => console.error(error),
-        nodes: TRANSFORMERS.flatMap((t: any) => t.dependencies).filter(Boolean),
         editorState: () =>
           // ready-to-go load from markdown 👀
           $convertFromMarkdownString(defaultText, TRANSFORMERS),

@@ -3,47 +3,51 @@ import camelCase from 'lodash/camelCase';
 import times from 'lodash/times';
 import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
+import type { JSONContent } from '@tiptap/core';
 import { BubbleMenu, EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import { Level } from '@tiptap/extension-heading';
 import { defaultMarkdownParser } from 'prosemirror-markdown';
+import type { Node } from 'prosemirror-model';
 
 import { defaultText, jsonState } from '@/content';
 
 import './Tiptap.css';
 
-const markMap = {
+const markMap: Partial<Record<string, string>> = {
   em: 'italic',
 };
 
 // TODO: fix empty lines being removed
-function mdToJson(doc: any) {
+function mdToJson(doc: Node): JSONContent {
   return {
     type: camelCase(doc.type.name),
     ...(doc.attrs && { attrs: doc.attrs }),
     ...(doc.type.name === 'text'
       ? {
           text: doc.text,
-          marks: doc.marks.map((m: any) => ({
-            type: markMap[m.type.name as keyof typeof markMap] || m.type.name,
-            attrs: m.attrs,
+          marks: doc.marks.map((m) => ({
+            ...m,
+            // tiptap plugins use *some* different type names - use those
+            // from markMap, else use the default prosemirror name
+            type: markMap[m.type.name] || m.type.name,
           })),
-          ...(doc.attrs && { attrs: doc.attrs }),
         }
       : {
-          content: doc.content.content.map(mdToJson),
+          // something about the type defs here is off
+          content: (doc.content as unknown as { content: Node[] }).content.map(
+            mdToJson
+          ),
         }),
   };
 }
 
-// BUG BubbleMenu breaks on unmount https://github.com/ueberdosis/tiptap/issues/3135
 export default ({ canEdit = true }) => {
   const setJson = useSetRecoilState(jsonState);
   const editor = useEditor(
     {
-      content: mdToJson(defaultMarkdownParser.parse(defaultText)),
-      // content: rawDoc,
+      content: mdToJson(defaultMarkdownParser.parse(defaultText)!),
       extensions: [
         StarterKit.configure({
           paragraph: {
@@ -90,6 +94,7 @@ export default ({ canEdit = true }) => {
   return (
     <div className="tiptap-container">
       {editor && (
+        // BUG BubbleMenu breaks on unmount https://github.com/ueberdosis/tiptap/issues/3135
         <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
           <div className="tiptap-toolbar">
             <select
