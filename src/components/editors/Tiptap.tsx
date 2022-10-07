@@ -3,8 +3,15 @@ import camelCase from 'lodash/camelCase';
 import times from 'lodash/times';
 import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
-import type { JSONContent } from '@tiptap/core';
+import { markInputRule, type JSONContent } from '@tiptap/core';
 import { BubbleMenu, EditorContent, useEditor } from '@tiptap/react';
+import Bold from '@tiptap/extension-bold';
+import Italic, {
+  // by default *sdf* creates italic text, however we want it to be bold
+  starInputRegex as boldInputRegex,
+  // only _sdf_ will be treated as italic text
+  underscoreInputRegex as italicInputRegex,
+} from '@tiptap/extension-italic';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import { Level } from '@tiptap/extension-heading';
@@ -51,10 +58,34 @@ export default ({ canEdit = true }) => {
       content: mdToJson(defaultMarkdownParser.parse(defaultText)!),
       extensions: [
         StarterKit.configure({
+          // overridden to customize input rules
+          bold: false,
+          // overridden to customize input rules
+          italic: false,
           paragraph: {
             HTMLAttributes: {
               style: 'margin: 0;',
             },
+          },
+        }),
+        Bold.extend({
+          addInputRules() {
+            return [
+              markInputRule({
+                find: boldInputRegex,
+                type: this.type,
+              }),
+            ];
+          },
+        }),
+        Italic.extend({
+          addInputRules() {
+            return [
+              markInputRule({
+                find: italicInputRegex,
+                type: this.type,
+              }),
+            ];
           },
         }),
         Link.extend({
@@ -109,21 +140,6 @@ export default ({ canEdit = true }) => {
           // HACK referencing `steps[1].slice.content[0].text` directly somehow has a side effect
           const res = JSON.parse(JSON.stringify(steps[1]));
           editor.commands.insertContent(res.slice.content[0].text);
-        }
-
-        // WIP, this undo is more complicated as tiptap seems a bit buggy here.
-        // probably, we will disable double underscore formatting and prefer
-        // using a single asterisk for bold (instead of italic)
-        const isUndoOfMultiCharAutoFormatting =
-          steps.length === 4 &&
-          steps[0] instanceof RemoveMarkStep &&
-          steps[1] instanceof ReplaceStep &&
-          steps[2] instanceof ReplaceStep &&
-          steps[3] instanceof ReplaceStep;
-
-        if (isUndoOfMultiCharAutoFormatting) {
-          console.log('TODO reapplying trailing characters');
-          console.log(steps);
         }
 
         setJson(editor.getJSON());
